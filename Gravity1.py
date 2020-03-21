@@ -5,17 +5,18 @@ import random
 import math
 
 x, y = 0, 200
-G = 10000 #6.67428 * 10**(-11)
-dt = 0.01
+G = 20000 #6.67428 * 10**(-11)
+dt = 0.001
 mass1 = 2
-mass2 = 2
-xlocation = [-2, 0]
+mass2 = 20
+xlocation = [0.9, -1]
 ylocation = [1, -1]
 time = 0
 
 def grav_force(x1, y1, x2, y2, mass1, mass2, G):
     angle =  math.atan((y2 - y1)/(x2 - x1))      #deltay/deltax
-    dr = ((x1-x2)**2 + (y1-y2)**2)**0.5
+    dr = max([((x1-x2)**2 + (y1-y2)**2)**0.5, 0.0001])
+    print(dr)
     force = G * mass1 * mass2 / dr**2
     xforce = math.cos(angle) * force 
     yforce = math.sin(angle) * force
