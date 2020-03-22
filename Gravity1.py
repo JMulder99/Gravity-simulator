@@ -8,17 +8,17 @@ import random
 import math
 
 # global variables
-# particles info
-mass1 = 20
-mass2 = 20
-xlocation = [-2, 2]
-ylocation = [1, -2]
-xspeed = [0, 10]
-yspeed = [-10, 15]
-
 # constants
-G = 200 #6.67428 * 10**(-11)
+G = 20 #6.67428 * 10**(-11)
 dt = 0.001
+
+# particles info
+mass1 = 2
+mass2 = 2000
+xlocation = [5, 0]
+ylocation = [0, 0]
+xspeed = [0, 0]
+yspeed = [100, 0]
 
 # Force function
 def grav_force(x1, y1, x2, y2, mass1, mass2, G):
