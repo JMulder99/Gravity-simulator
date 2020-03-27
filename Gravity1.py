@@ -10,15 +10,16 @@ import math
 # global variables
 # constants
 G = 20 #6.67428 * 10**(-11)
-dt = 0.001
+dt = 0.01
 
 # particles info
-mass1 = 2
-mass2 = 2000
-xlocation = [5, 0]
-ylocation = [0, 0]
-xspeed = [0, 0]
-yspeed = [100, 0]
+mass0 = 100000
+mass1 = 10
+mass2 = 3
+xlocation = [0, 100, -80]
+ylocation = [0, 0, 0]
+xspeed = [0, 0, 0]
+yspeed = [0, 120, -80]
 
 # Force function
 def grav_force(x1, y1, x2, y2, mass1, mass2, G):
@@ -52,25 +53,33 @@ def displacement(force, mass, v, dt):
 
 # for loop which draws the dots on a figure
 for i in range(600):
-    #particle 1
-    xforce1, yforce1 = grav_force(xlocation[0], ylocation[0], xlocation[1], ylocation[1], mass1, mass2, G)
-    dx1, xspeed[0] = displacement(xforce1, mass1, xspeed[0], dt)
-    dy1, yspeed[0] = displacement(yforce1, mass1, yspeed[0], dt)
+    # particle 0 - sun
+    xforce0, yforce0 = grav_force(xlocation[0], ylocation[0], xlocation[1], ylocation[1], mass0, mass1, G) # first coord are primare object - particle 0
+    dx0, xspeed[0] = displacement(xforce0, mass0, xspeed[0], dt)
+    dy0, yspeed[0] = displacement(yforce0, mass0, yspeed[0], dt)
+    # update location particle 0
+    xlocation[0] += dx0
+    ylocation[0] += dy0
+
+    # particle 1
+    xforce1, yforce1 = grav_force(xlocation[1], ylocation[1], xlocation[0], ylocation[0], mass1, mass0, G) # first coord are primare object- particle 1
+    dx1, xspeed[1] = displacement(xforce1, mass1, xspeed[1], dt)
+    dy1, yspeed[1] = displacement(yforce1, mass1, yspeed[1], dt)
     # update location particle 1
-    xlocation[0] += dx1
-    ylocation[0] += dy1
+    xlocation[1] += dx1
+    ylocation[1] += dy1
     # particle 2
-    xforce2, yforce2 = grav_force(xlocation[1], ylocation[1], xlocation[0], ylocation[0], mass1, mass2, G)
-    dx2, xspeed[1] = displacement(xforce2, mass2, xspeed[1], dt)
-    dy2, yspeed[1] = displacement(yforce2, mass2, yspeed[1], dt)
+    xforce2, yforce2 = grav_force(xlocation[2], ylocation[2], xlocation[0], ylocation[0], mass2, mass0, G)
+    dx2, xspeed[2] = displacement(xforce2, mass2, xspeed[2], dt)
+    dy2, yspeed[2] = displacement(yforce2, mass2, yspeed[2], dt)
     # update location particle 2
-    xlocation[1] += dx2
-    ylocation[1] += dy2
+    xlocation[2] += dx2
+    ylocation[2] += dy2
 
     # plot the two dots using matplotlib
-    plt.plot(xlocation[0], ylocation[0], 'ro', xlocation[1], ylocation[1], 'go')
-    plt.xlim(-10, 10)
-    plt.ylim(-10, 10)
+    plt.plot(xlocation[0], ylocation[0], 'ro', xlocation[1], ylocation[1], 'go', xlocation[2], ylocation[2], 'bo')
+    plt.xlim(-120, 120)
+    plt.ylim(-120, 120)
     plt.draw()
     plt.pause(0.000001)
     plt.clf()
