@@ -77,8 +77,20 @@ def displacement(force, mass, v, dt):
     dx = v * dt # dx = v0*dt + a * t * dt
     return dx, v
 
+def update(plan1, plan2):
+    xforce, yforce = grav_force(xlocation[plan1], ylocation[plan1], xlocation[plan2], ylocation[plan2], masses[plan1], masses[plan2], G) # first coord are primare object - particle 0
+    dx, xspeed[plan1] = displacement(xforce, masses[plan1], xspeed[plan1], dt)
+    dy, yspeed[plan1] = displacement(yforce, masses[plan1], yspeed[plan1], dt)
+    # update location particle 0
+    xlocation[plan1] += dx
+    ylocation[plan1] += dy
+
 # for loop which draws the dots on a figure
-for i in range(600):
+for i in range(600): # dit is slecht
+    for plan1 in range(numplan): # gaat echt niet goed
+        for plan2 in range(numplan): # ramp!
+            update(plan1, plan2)
+    '''
     # particle 0 - sun
     xforce0, yforce0 = grav_force(xlocation[0], ylocation[0], xlocation[1], ylocation[1], masses[0], masses[1], G) # first coord are primare object - particle 0
     dx0, xspeed[0] = displacement(xforce0, masses[0], xspeed[0], dt)
@@ -94,6 +106,8 @@ for i in range(600):
     # update location particle 1
     xlocation[1] += dx1
     ylocation[1] += dy1
+    '''
+
     '''# particle 2
     xforce2, yforce2 = grav_force(xlocation[2], ylocation[2], xlocation[0], ylocation[0], masses[2], masses[0], G)
     dx2, xspeed[2] = displacement(xforce2, masses[2], xspeed[2], dt)
